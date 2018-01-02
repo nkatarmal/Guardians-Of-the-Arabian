@@ -8,15 +8,17 @@ from threading import Lock
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
-server.bind(('172.16.4.132', 12345))
+server.bind(('192.168.43.173', 12345))
 server.listen(100)
 client_found=False
 no_of_client=0
-list_of_clients = []
+list_of_clients = [0,0]
 list_ip=[]
 data1=False
 client1_map=[]
 client2_map=[]
+client1_turn=False
+client2_turn=False
 lock=Lock()
 def read_data(conn,addr):
 	if not(data1):
@@ -37,6 +39,9 @@ def read_data(conn,addr):
 def clientthread(conn, addr):
 
 	global data1
+	global list_of_clients
+	global client1_turn
+	global client2_turn
 	# sends a message to the client whose user object is conn
 	#conn.send("Welcome to this chatroom!")
 	while not(client_found):
@@ -56,6 +61,7 @@ def clientthread(conn, addr):
 							msg=conn.recv(4096)
 							#print msg
 							client1_map=json.loads(msg)
+							list_of_clients[0]=conn
 							print "client1 data"
 							print client1_map
 							lock.release()
@@ -68,12 +74,40 @@ def clientthread(conn, addr):
 							msg=conn.recv(4096)
 							#print msg
 							client2_map=json.loads(msg)
+							list_of_clients[1]=conn
 							print "client2 data"
 							print client2_map
 							lock.release()
+							temp_conn=list_of_clients[0]
+							temp_conn.send(json.dumps('start'))
+							client1_turn=True	
+							print "start send"
 						except Exception as e:
 							print e
-						
+						first_only=True
+						cl1=list_of_clients[0]
+						cl2=list_of_clients[1]
+						while True:
+							while client1_turn:
+								ms=json.loads(cl1.recv(512))
+								print "msg"+ms
+								if ms =="cor":
+									print 'cor received'
+									pos=json.loads(cl1.recv(512))
+									client1_turn=False
+									client2_turn=True
+									print pos
+									if first_only:
+										list_of_clients[1].send(json.dumps('start'))
+										first_only=False
+							while client2_turn:
+								ms=json.loads(cl2.recv(512))
+								if ms=='cor':
+									pos=json.loads(cl2.recv(512))
+									client1_turn=True
+									client2_turn=False
+									print pos
+
 					"""prints the message and address of the
 					user who just sent the message on the server
 					terminal"""
