@@ -80,6 +80,9 @@ def review():
 
 
 
+
+
+
 b1=tk.Button(frame1, text="      Start New Game      ",command=review)
 
 b1.pack()
