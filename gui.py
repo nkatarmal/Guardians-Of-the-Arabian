@@ -1,4 +1,3 @@
-
 def gameGui(boat_map):
     import Tkinter as tk
 
@@ -20,7 +19,7 @@ def gameGui(boat_map):
     for i in range(25):
         for j in range(25):
             if boat_map[i][j]==1:
-                b = tk.Button(frame1, text="  ",bg='red')
+                b = tk.Button(frame1, text="  ",bg='blue')
                 b.grid(row=i, column=j)
             else:
                 b = tk.Button(frame1, text="  ")
@@ -34,5 +33,7 @@ def gameGui(boat_map):
         for j in range(25):
             b = tk.Button(frame2, text="  ",command=lambda i=i,j=j:showGrid(i,j))
             b.grid(row=i, column=j)
+
+
 
     root.mainloop()

@@ -37,7 +37,11 @@ def call_guiboat(clientsocket):
 
     for i in range(25):
         for j in range(25):
+
             b = tk.Button(frame1, text="  ",command=lambda i=i,j=j:showGrid(i,j))
+
+            b = tk.Button(frame1, text="  ",command=lambda i=i,j=j:showGrid(i,j),height = 1, width = 1)
+
             b.grid(row=i,column=j)
             button_list[i][j]=b
    
@@ -72,7 +76,8 @@ def call_guiboat(clientsocket):
     b = tk.Button(frame3, text="length:"+str(lengths[index]),command=boatSelection)
     b.pack()
 
+
     root.mainloop()
 if __name__ == "__main__":
-    call_guiboat()
-print "hello"
+    call_guiboat(None)
+
