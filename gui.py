@@ -1,4 +1,3 @@
-
 def gameGui(boat_map):
     import Tkinter as tk
 
@@ -34,5 +33,7 @@ def gameGui(boat_map):
         for j in range(25):
             b = tk.Button(frame2, text="  ",command=lambda i=i,j=j:showGrid(i,j))
             b.grid(row=i, column=j)
+
+
 
     root.mainloop()

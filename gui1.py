@@ -75,4 +75,6 @@ def call_guiboat(clientsocket):
     root.mainloop()
 if __name__ == "__main__":
     call_guiboat(None)
+
+root.mainloop()
 print "hello"
